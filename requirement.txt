@@ -9,8 +9,10 @@ idna==3.3
 itsdangerous==2.1.0
 Jinja2==3.0.3
 MarkupSafe==2.1.0
+mysql-connector-python==8.0.28
 oauthlib==3.2.0
 pkg_resources==0.0.0
+protobuf==3.19.4
 pycparser==2.21
 pyOpenSSL==22.0.0
 requests==2.27.1

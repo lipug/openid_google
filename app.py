@@ -1,6 +1,5 @@
 import json
 import os
-import sqlite3
 
 from flask import Flask, redirect, request, url_for
 from flask_login import (
@@ -14,8 +13,9 @@ from flask_login import (
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 
-from db import init_db_command
 from user import User
+
+print(0, __name__)
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '515276349156-8v4pujsfajmthbie7a3t41u5t2n2sfd4.apps.googleusercontent.com')
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "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")
@@ -25,14 +25,15 @@ GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configur
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
+print(1, __name__)
+
 login_manager = LoginManager()
+print(2, __name__, login_manager)
 login_manager.init_app(app)
+print(3, __name__)
+# init_db_command()
 
-try:
-    init_db_command()
-except sqlite3.OperationalError: 
-    pass # Assume it's already been created
-
+print(4, __name__)
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 @login_manager.user_loader
@@ -121,5 +122,7 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
+print(10,__name__)
 if __name__ == "__main__":
+    print("We Go...")
     app.run(ssl_context="adhoc")

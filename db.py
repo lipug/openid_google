@@ -1,4 +1,4 @@
-import sqlite3
+import mysql.connector
 
 import click
 from flask import current_app, g
@@ -7,10 +7,9 @@ from flask.cli import with_appcontext
 
 def get_db():
     if "db" not in g:
-        g.db = sqlite3.connect(
-            "sqlite_db", detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
+        g.db = mysql.connector.connect(user='tomcat', password='pourtomcat',
+                              host='127.0.0.1',
+                              database='testoauth')
 
     return g.db
 
@@ -26,7 +25,10 @@ def init_db():
     db = get_db()
 
     with current_app.open_resource("schema.sql") as f:
-        db.executescript(f.read().decode("utf8"))
+        with db.cursor() as cursor:
+            cursor.execute(f.read().decode("utf8"), multi=True)
+
+    db.commit()
 
 
 @click.command("init-db")
